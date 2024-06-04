@@ -147,3 +147,32 @@ void D3D12HelloTriangle::PopulateCommandList()
 
 
 
+
+
+
+
+
+
+
+
+### 실습화면
+
+![image](https://github.com/qkrgudals1030/direct3d/assets/50895124/0a6dc12e-959c-44f0-ac62-1c5b4de084b4)
+
+
+![image](https://github.com/qkrgudals1030/direct3d/assets/50895124/31d6d707-50f6-4ce5-91ad-9800525bde04)
+
+
+![image](https://github.com/qkrgudals1030/direct3d/assets/50895124/9a1cc1ad-89c2-4edb-8bfa-53c863e6a042)
+
+
+
+
+
+
+
+
+
+
+
+
