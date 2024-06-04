@@ -192,6 +192,8 @@ m_device->CreateShaderResourceView(m_texture.Get(), &srvDesc, m_srvHeap->GetCPUD
 
 ```
 
+요약하면 해당 텍스처를 생성한 삼각형위에 덮어씌워 출력될 수 있도록 하는 것입니다.
+
 ### assets파일 
 
 - HelloTriangle,HelloTexture에서 assets파일이 필요한 이유: 일반적으로 그래픽 애플리케이션에서 사용할 셰이더 코드, 텍스처 이미지, 모델 데이터 등과 같은 리소스를 포함합니다. DirectX 12 예제 코드에서는 shaders.hlsl 파일을 사용하고 있으며, 이 파일은 셰이더 프로그램을 정의합니다. 셰이더는 GPU에서 실행되어 그래픽 파이프라인의 여러 단계를 처리합니다.
