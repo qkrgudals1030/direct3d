@@ -139,6 +139,60 @@ void D3D12HelloTriangle::PopulateCommandList()
 
 ### HelloTriangle -> HelloTexture로 추가된 내용
 
+1. 루트 서명 버전 확인: D3D12_FEATURE_DATA_ROOT_SIGNATURE 구조체를 사용하여 지원되는 루트 서명 버전을 확인하고, 적절한 버전을 설정하는 코드가 추가되었습니다.
+2. 
+```
+루트 서명 버전 확인: D3D12_FEATURE_DATA_ROOT_SIGNATURE 구조체를 사용하여 지원되는 루트 서명 버전을 확인하고, 적절한 버전을 설정하는 코드가 추가되었습니다.
+
+```
+
+2. 루트 서명 생성 방식: CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC를 사용하여 버전별 루트 서명 디스크립터를 생성하는 코드가 추가되었습니다.
+
+
+```
+CD3DX12_DESCRIPTOR_RANGE1 ranges[1];
+ranges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
+CD3DX12_ROOT_PARAMETER1 rootParameters[1];
+rootParameters[0].InitAsDescriptorTable(1, &ranges[0], D3D12_SHADER_VISIBILITY_PIXEL);
+CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
+rootSignatureDesc.Init_1_1(_countof(rootParameters), rootParameters, 1, &sampler, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+
+```
+
+3. 텍스처 업로드 힙 생성 및 데이터 복사: 텍스처 업로드 힙을 생성하고 텍스처 데이터를 복사한 후, 텍스처의 리소스 상태를 변경하는 코드가 추가되었습니다.
+
+```
+const UINT64 uploadBufferSize = GetRequiredIntermediateSize(m_texture.Get(), 0, 1);
+ThrowIfFailed(m_device->CreateCommittedResource(
+    &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+    D3D12_HEAP_FLAG_NONE,
+    &CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize),
+    D3D12_RESOURCE_STATE_GENERIC_READ,
+    nullptr,
+    IID_PPV_ARGS(&textureUploadHeap)));
+
+std::vector<UINT8> texture = GenerateTextureData();
+D3D12_SUBRESOURCE_DATA textureData = {};
+textureData.pData = &texture[0];
+textureData.RowPitch = TextureWidth * TexturePixelSize;
+textureData.SlicePitch = textureData.RowPitch * TextureHeight;
+UpdateSubresources(m_commandList.Get(), m_texture.Get(), textureUploadHeap.Get(), 0, 0, 1, &textureData);
+m_commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_texture.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
+
+```
+
+4. 텍스처에 대한 셰이더 리소스 뷰 생성: 텍스처에 대한 셰이더 리소스 뷰(SRV)를 생성하는 코드가 추가되었습니다.
+
+```
+D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+srvDesc.Format = textureDesc.Format;
+srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+srvDesc.Texture2D.MipLevels = 1;
+m_device->CreateShaderResourceView(m_texture.Get(), &srvDesc, m_srvHeap->GetCPUDescriptorHandleForHeapStart());
+
+```
+
 
 ### assets파일 
 
