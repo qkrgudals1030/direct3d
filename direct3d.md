@@ -1,7 +1,7 @@
 ###  HelloWindow -> HelloTriangle로 추가되는 내용
 
-
-D3D12HelloWindow 클래스는 기본적인 DirectX 12 윈도우 초기화와 렌더링 루프를 포함하고 있으며, D3D12HelloTriangle 클래스는 삼각형을 렌더링하기 위한 추가적인 초기화 및 자산 로딩을 포함합니다. 두 클래스의 주요 차이점은 다음과 같습니다.
+D3D12HelloWindow 클래스는 기본적인 DirectX 12 윈도우 초기화와 렌더링 루프를 포함하고 있으며,
+D3D12HelloTriangle 클래스는 삼각형을 렌더링하기 위한 추가적인 초기화 및 자산 로딩을 포함합니다. 두 클래스의 주요 차이점은 다음과 같습니다.
 
 #### 1. Root Signature 및 Pipeline State 객체 생성
 
@@ -138,6 +138,10 @@ void D3D12HelloTriangle::PopulateCommandList()
 이와 같은 변경 사항을 통해 D3D12HelloTriangle 클래스는 삼각형을 렌더링할 수 있게 됩니다. 주요 추가 항목은 루트 서명, 파이프라인 상태 객체, 버텍스 버퍼 생성 및 명령 리스트 업데이트입니다.
 
 ### HelloTriangle -> HelloTexture로 추가된 내용
+
+
+
+
 
 
 
